@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/main.css">
+
+    <script src="js/bootstrap.js"></script>
+    <script src="js/main.js"></script>
+
+
+    <title>BMWRRF Time Clock</title>
+</head>
+<body>
+
+
+<div class="row">
+    <div class="col-1"></div>
+    <div class="col-10">
+        <div class="row Title-Row">
+            <div class="col"></div>
+            <div class="col">
+                <h2>BMWRRF Time Clock</h2>
+            </div>
+            <div class="col"></div>
+        </div>
+
+        <div class="row Clock-Row">
+            <div class="col"></div>
+            <div class="col time_stamp" id="time_span" onload="updateTime(); setInterval('updateTime()', 1000 )">
+            </div>
+            <div class="col"></div>
+
+
+        </div>
+
+
+        <div class="row User-Input-Row">
+            <div class="row Subtitle-Row">
+                <label for="employee_id">What is your employee ID?</label>
+                <input type="number" maxlength="10" minlength="10" id="employee_id" name="Employee ID">
+            </div>
+
+
+            <div class="Submit-Row">
+                <button type="submit" name="submit_button" value="Punch In" class="btn btn-success"
+                        onclick="punch_In_User()"
+                        id="Clock-In-Button">Punch In
+                </button>
+                <button type="submit" name="submit_button" class="btn btn-info">Punch Out</button>
+
+
+            </div>
+
+
+        </div>
+
+
+        <div class="row Confirmation-Row">
+
+            <div id="Confirmation-Div"></div>
+
+            <div class="row Conformation-Prompt-Div" id="Confirmation-Prompt-Div"></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</div>
+
+
+<script>
+    setInterval(updateTime, 1000);
+
+    setupHTML();
+
+
+
+
+</script>
+
+</body>
+</html>
