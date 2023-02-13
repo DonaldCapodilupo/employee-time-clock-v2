@@ -35,26 +35,29 @@
 
         </div>
 
+        <form method="post" action="/">
+            <div class="row User-Input-Row">
+                <div class="row Subtitle-Row">
+                    <label for="employee_id">What is your employee ID?</label>
+                    <input type="number" id="employee_id" name="request_input">
+                    <input type="submit" style="display: none" />
+                </div>
 
-        <div class="row User-Input-Row">
-            <div class="row Subtitle-Row">
-                <label for="employee_id">What is your employee ID?</label>
-                <input type="number" maxlength="10" minlength="10" id="employee_id" name="Employee ID">
+
+
+                <div class="Submit-Row">
+                    <button type="submit" name="submit_button" value="Punch In" class="btn btn-success"
+                            id="Submit Button"
+                            id="Clock-In-Button">Punch In
+                    </button>
+                    <button type="submit" name="submit_button" class="btn btn-info">Punch Out</button>
+
+
+                </div>
+
+
             </div>
-
-
-            <div class="Submit-Row">
-                <button type="submit" name="submit_button" value="Punch In" class="btn btn-success"
-                        onclick="punch_In_User()"
-                        id="Clock-In-Button">Punch In
-                </button>
-                <button type="submit" name="submit_button" class="btn btn-info">Punch Out</button>
-
-
-            </div>
-
-
-        </div>
+        </form>
 
 
         <div class="row Confirmation-Row">
