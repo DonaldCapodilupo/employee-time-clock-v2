@@ -3,17 +3,52 @@
 /* jshint node: true */
 
 const employees = {
-    "0000000001": "Nick",
-    "0000000002": "Keith",
-    "0000000003": "Chris",
-    "0000000004": "Dragan",
-    "0000000005": "Dave",
-    "0000000006": "Connor",
-    "0000000007": "Donald",
-    "0000000008": "Shayne",
+    "001": "Nick",
+    "002": "Keith",
+    "003": "Chris",
+    "004": "Dragan",
+    "005": "Dave",
+    "006": "Connor",
+    "007": "Donald",
+    "008": "Shayne",
 };
 
-let present_employees = {};
+let present_employees = [];
+
+const time_card_object = {
+    "Nick": {
+        "Punch In": "",
+        "Punch Out": ""
+    },
+    "Keith": {
+        "Punch In": "",
+        "Punch Out": ""
+    },
+    "Chris": {
+        "Punch In": "",
+        "Punch Out": ""
+    },
+    "Dragan": {
+        "Punch In": "",
+        "Punch Out": ""
+    },
+    "Dave": {
+        "Punch In": "",
+        "Punch Out": ""
+    },
+    "Connor": {
+        "Punch In": "",
+        "Punch Out": ""
+    },
+    "Donald": {
+        "Punch In": "",
+        "Punch Out": ""
+    },
+    "Shayne": {
+        "Punch In": "",
+        "Punch Out": ""
+    }
+};
 
 function get_Current_Time() {
     let currentTime = new Date();
@@ -40,7 +75,7 @@ function get_Current_Time() {
     return t_str;
 }
 
-function get_Current_Date(){
+function get_Current_Date() {
     let currentTime = new Date();
     let day = currentTime.getDate();
     let month = currentTime.getMonth();
@@ -62,22 +97,35 @@ function submit_User_Input(user_input) {
     let employee_name = employees[user_input];
     let current_time = get_Current_Time();
 
-    console.log(employee_name + " has punched in at " + current_time);
+    console.log(employee_name + " has punched their card at " + current_time);
 
 
     //Check to see if the employee has already been punched in.
-    if (employee_name in present_employees) {
+    if (present_employees.includes(employee_name)) {
         console.log(employee_name + " has is being punched out.");
-        present_employees[employee_name]["Punch Out"] = current_time;
+        present_employees.slice(employee_name);
+
+        let obj = {};
+
+        obj.name = employee_name;
+        obj.punch_unit = "Punch Out";
+        obj.punch_time = current_time;
+        create_JSON_Entry(obj);
 
     } else {
         console.log("Logging in " + employee_name);
-        present_employees[employee_name] = {"Punch In": current_time};
+        present_employees.push(employee_name);
+
+        let obj = {};
+
+        obj.name = employee_name;
+        obj.punch_unit = "Punch In";
+        obj.punch_time = current_time;
+        create_JSON_Entry(obj);
+
 
 
     }
-
-    create_JSON_Entry(present_employees);
 
 
 }
@@ -86,15 +134,16 @@ const fs = require('fs');
 
 function create_JSON_Entry(data) {
 
-    let json_title = "./"+ get_Current_Date() + ".json";
+    let json_title = get_Current_Date() + ".json";
 
     console.log(fs.existsSync(json_title));
     console.log(!fs.existsSync(json_title));
 
     if (!fs.existsSync(json_title)) {
         //create new file if not exist
-        fs.closeSync(fs.openSync(json_title, 'w'));
-
+        fs.openSync(json_title, 'w');
+        fs.writeFileSync(json_title, JSON.stringify(time_card_object));
+        
     }
 
     // read file
@@ -102,17 +151,17 @@ function create_JSON_Entry(data) {
 
 
     //check if file is empty
-    if (file.length === 0) {
-        //add data to json file
-        fs.writeFileSync(json_title, JSON.stringify(data));
-    } else {
-        //append data to jso file
-        const json = [JSON.parse(file.toString())];
-        //add json element to json object
-        let new_data = data;
-        json.push(new_data);
-        fs.writeFileSync(json_title, JSON.stringify(new_data));
-    }
+
+    //append data to jso file
+    const json = JSON.parse(file.toString());
+
+    //add json element to json object
+    json[data.name][data.punch_unit] = data.punch_time;
+
+
+    fs.writeFileSync(json_title, JSON.stringify(json));
+
+
 }
 
 
@@ -136,20 +185,19 @@ app.get('/', (req, res) => {
 });
 
 
-
 //When the user makes a post request on the application.
 app.post('/', (req, res) => {
 
     let user_input = req.body.request_input;
 
-    console.log("Input Recieved: " + user_input); // changed to body
+    console.log("Input Received: " + user_input); // changed to body
 
     submit_User_Input(user_input);
 
     console.log(present_employees);
 
 
-    res.sendFile(path.join(__dirname, 'templates/index.html'), {name:"Donald"});
+    res.sendFile(path.join(__dirname, 'templates/index.html'), {name: "Donald"});
 });
 
 //This function runs the application.
